@@ -63,11 +63,6 @@ unsigned long lowest = 0;
 unsigned long highest = 0;
 // end vars for reading the time at which a button was pressed
 
-// joystick averaging storage vars
-unsigned long updown = 0;
-unsigned long leftright = 0;
-// end joystick averaging storage vars
-
 // other variables
 unsigned long time;                              // track the time
 unsigned long interval = 250;                    // the time difference by which buttons can be pressed
@@ -89,6 +84,15 @@ void setup() {
 }
 
 void loop(){
+  
+  int upcount = 0;
+  int downcount = 0;
+  int noupdown = 0;
+  int leftcount = 0;
+  int rightcount = 0;
+  int noleftright = 0;
+  int x = 0;
+  int joystickBag[2];
   
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
@@ -201,78 +205,71 @@ void loop(){
   
   // Joysticks
   // What I need to do is not average them, but get the absolute value of each of the three controllers, then base probability on that. i.e. 2 people right, one left means 2/3 chance you go right and 1/3 chance you go left.
-  leftright = (value1 + value3 + value5)/3;
-  updown = (value2 + value4 + value6)/3;
+  int leftright[] = {value1, value3, value5};
+  int updown[] = {value2, value4, value6};
   
-  if (updown>=0 && updown<=256) {
-    Keyboard.press('s');
-    delay(50);
-    Keyboard.releaseAll();
-  } else if (updown>=257 && updown<=299) {
-    randNumber = random(2);
-    if (randNumber==1) {
-      Keyboard.press('w');
-      delay(50);
-      Keyboard.releaseAll();
-    } else {
-      Keyboard.press('s');
-      delay(50);
-      Keyboard.releaseAll();
+  for (i=0;i<3;i++){
+    if (updown[i]>=0 && updown[i]<=299) {
+      downcount++;
+    } else if (updown[i]>=300 && updown[i]<=700) {
+      noupdown++;
+    } else if (updown[i]>=701 && updown[i]<=1024) {
+      upcount++;
     }
-  } else if (updown>=300 && updown<=700) {
-    Keyboard.releaseAll();
-  } else if (updown>=701 && updown<=767) {
-    randNumber = random(2);
-    if (randNumber==1) {
-      Keyboard.press('s');
-      delay(50);
-      Keyboard.releaseAll();
-    } else {
-      Keyboard.press('w');
-      delay(50);
-      Keyboard.releaseAll();
+  }
+  
+  for (i=0;i<3;i++){
+    if (leftright[i]>=0 && leftright[i]<=299) {
+      rightcount++;
+    } else if (leftright[i]>=300 && leftright[i]<=700) {
+      noleftright++;
+    } else if (leftright[i]>=701 && leftright[i]<=1024) {
+      leftcount++;
     }
-  } else if (updown>=768 && updown<=1024) {
-    Keyboard.press('w');
+  }
+  
+  for (i=0;i<rightcount;i++) {
+    joystickBag[x] = 215;
+    x++;
+  }
+  for (i=0;i<leftcount;i++){
+    joystickBag[x] = 216;
+    x++;
+  }
+  for (i=0;i<upcount;i++) {
+    joystickBag[x] = 218;
+    x++;
+  }
+  for (i=0;i<downcount;i++){
+    joystickBag[x] = 217;
+    x++;
+  }
+  for (i=0;i<noleftright;i++){
+    joystickBag[x] = 0;
+    x++;
+  }
+  for (i=0;i<noupdown;i++){
+    joystickBag[x] = 0;
+    x++;
+  }
+  
+  randNumber = random(2);
+  joystickBag[randNumber];
+  
+  if (joystickBag[randNumber]==0) {
+    Keyboard.releaseAll();
+  } else {
+    Keyboard.press(joystickBag[randNumber]);
     delay(50);
     Keyboard.releaseAll();
   }
-  
-  if (leftright>=0 && leftright<=256) {
-    Keyboard.press('d');
-    delay(50);
-    Keyboard.releaseAll();
-  } else if (leftright>=257 && leftright<=299) {
-    randNumber = random(2);
-    if (randNumber==1) {
-      Keyboard.press('a');
-      delay(50);
-      Keyboard.releaseAll();
-    } else {
-      Keyboard.press('d');
-      delay(50);
-      Keyboard.releaseAll();
-    }
-  } else if (leftright>=300 && leftright<=700) {
-    Keyboard.releaseAll();
-  } else if (leftright>=701 && leftright<=767) {
-    randNumber = random(2);
-    if (randNumber==1) {
-      Keyboard.press('d');
-      delay(50);
-      Keyboard.releaseAll();
-    } else {
-      Keyboard.press('a');
-      delay(50);
-      Keyboard.releaseAll();
-    }
-  } else if (leftright>=768 && leftright<=1024) {
-    Keyboard.press('a');
-    delay(50);
-    Keyboard.releaseAll();
-  }
-  
-  Serial.print(updown);
+
+  Serial.print(joystickBag[0]);
   Serial.print("\t : \t");
-  Serial.println(leftright);
+  Serial.print(joystickBag[1]);
+  Serial.print("\t : \t");
+  Serial.print(joystickBag[2]);
+  Serial.print("\t : \t");
+  Serial.println(joystickBag[randNumber]);
+  
 }
