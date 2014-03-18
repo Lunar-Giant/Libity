@@ -25,6 +25,12 @@ const int buttonPin3 = 10;
 const int buttonPin4 = 11;
 const int buttonPin5 = 12;
 const int buttonPin6 = 13;
+const int joyPin1 = 0;
+const int joyPin2 = 1;
+const int joyPin3 = 2;
+const int joyPin4 = 3;
+const int joyPin5 = 4;
+const int joyPin6 = 5;
 
 // vars for reading when pushbuttons 1-8 have been pressed
 int buttonState = 0;
@@ -34,6 +40,15 @@ int buttonState4 = 0;
 int buttonState5 = 0;
 int buttonState6 = 0;
 // end vars for reading when pushbuttons 1-8 have been pressed
+
+// vars for reading when joysticks are being used
+int value1 = 0;
+int value2 = 0;
+int value3 = 0;
+int value4 = 0;
+int value5 = 0;
+int value6 = 0;
+// end vars for reading when joysticks are being used
 
 // vars for reading the time at which the first button was pressed
 unsigned long buttonTime = 0;
@@ -47,6 +62,18 @@ unsigned long buttonTime6 = 502;
 unsigned long lowest = 0;
 unsigned long highest = 0;
 // end vars for reading the time at which a button was pressed
+
+// joystick averaging storage vars
+unsigned long updown = 0;
+unsigned long leftright = 0;
+// end joystick averaging storage vars
+
+// joystick tolerances, paired
+int joystickArray[] = {0,256,257,499,500,520,521,767,768,1024};
+char w = "w";
+char a = "a";
+char s = "s";
+char d = "d";
 
 // other variables
 unsigned long time;                              // track the time
@@ -67,8 +94,11 @@ void setup() {
   Keyboard.begin();
 }
 
+int treatValue(int data) {
+  return (data);
+ }
+
 void loop(){
-  int i;
   
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
@@ -77,9 +107,20 @@ void loop(){
   buttonState4 = digitalRead(buttonPin4);
   buttonState5 = digitalRead(buttonPin5);
   buttonState6 = digitalRead(buttonPin6);
+  value1 = analogRead(joyPin1);
+  delay(10);
+  value2 = analogRead(joyPin2);
+  delay(10);
+  value3 = analogRead(joyPin3);
+  delay(10);
+  value4 = analogRead(joyPin4);
+  delay(10);
+  value5 = analogRead(joyPin5);
+  delay(10);
+  value6 = analogRead(joyPin6);
   time = millis();
   
-  
+  // program it so that the average dictates the chance of up, down, left, or right firing.
 
   // check if the pushbutton is pressed.
   // if it is, the buttonState is HIGH:
@@ -167,4 +208,22 @@ void loop(){
   } else {
     Keyboard.releaseAll();
   }
+  
+  // Joysticks
+  
+  updown = (value1 + value3 + value5)/3;
+  leftright = (value2 + value4 + value6)/3;
+  
+  for (int i=0; i<6; i++){
+    if ((updown>=joystickArray[i] && updown<=joystickArray[i+1])) {
+      // if it is between the two above variables, press a button (wasd) from an array of chars, but with a frequency of i+ or - X
+    }
+    if ((leftright>=joystickArray[i] && leftright<=joystickArray[i+1])) {
+      
+    }
+  }
+  
+  Serial.print(treatValue(updown));
+  Serial.print("\t : \t");
+  Serial.println(treatValue(leftright));
 }
