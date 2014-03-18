@@ -67,6 +67,7 @@ unsigned long highest = 0;
 unsigned long time;                              // track the time
 unsigned long interval = 250;                    // the time difference by which buttons can be pressed
 int i = 0;                                       // my crappy counter for the max/min thing
+int previousStick = 0;
 int randNumber;
 
 void setup() {
@@ -161,14 +162,14 @@ void loop(){
   }
   
   if (abs(highest - lowest) <= interval) {
-    Keyboard.press('w');
-    delay(50);
-    Keyboard.releaseAll();
+    Keyboard.press(64);
+    delay(5);
+    Keyboard.release(64);
     buttonTime = 0;
     buttonTime2 = 251;
     buttonTime3 = 502;
   } else {
-    Keyboard.releaseAll();
+    Keyboard.release(64);
   }
   
   
@@ -194,17 +195,16 @@ void loop(){
   
   if (abs(highest - lowest) <= interval) {
     Keyboard.press(' ');
-    delay(50);
-    Keyboard.releaseAll();
+    delay(10);
+    Keyboard.release(' ');
     buttonTime4 = 0;
     buttonTime5 = 251;
     buttonTime6 = 502;
   } else {
-    Keyboard.releaseAll();
+    Keyboard.release(' ');
   }
   
   // Joysticks
-  // What I need to do is not average them, but get the absolute value of each of the three controllers, then base probability on that. i.e. 2 people right, one left means 2/3 chance you go right and 1/3 chance you go left.
   int leftright[] = {value1, value3, value5};
   int updown[] = {value2, value4, value6};
   
@@ -257,13 +257,13 @@ void loop(){
   joystickBag[randNumber];
   
   if (joystickBag[randNumber]==0) {
-    Keyboard.releaseAll();
-  } else {
+    Keyboard.release(previousStick);
+  } else if (previousStick!=joystickBag[randNumber]){
+    Keyboard.release(previousStick);
     Keyboard.press(joystickBag[randNumber]);
-    delay(50);
-    Keyboard.releaseAll();
   }
 
+/*
   Serial.print(joystickBag[0]);
   Serial.print("\t : \t");
   Serial.print(joystickBag[1]);
@@ -271,5 +271,5 @@ void loop(){
   Serial.print(joystickBag[2]);
   Serial.print("\t : \t");
   Serial.println(joystickBag[randNumber]);
-  
+*/
 }
