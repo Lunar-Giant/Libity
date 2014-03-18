@@ -68,17 +68,11 @@ unsigned long updown = 0;
 unsigned long leftright = 0;
 // end joystick averaging storage vars
 
-// joystick tolerances, paired
-int joystickArray[] = {0,256,257,499,500,520,521,767,768,1024};
-char w = "w";
-char a = "a";
-char s = "s";
-char d = "d";
-
 // other variables
 unsigned long time;                              // track the time
 unsigned long interval = 250;                    // the time difference by which buttons can be pressed
 int i = 0;                                       // my crappy counter for the max/min thing
+int randNumber;
 
 void setup() {
   
@@ -93,10 +87,6 @@ void setup() {
   Serial.begin(9600);
   Keyboard.begin();
 }
-
-int treatValue(int data) {
-  return (data);
- }
 
 void loop(){
   
@@ -210,20 +200,79 @@ void loop(){
   }
   
   // Joysticks
+  // What I need to do is not average them, but get the absolute value of each of the three controllers, then base probability on that. i.e. 2 people right, one left means 2/3 chance you go right and 1/3 chance you go left.
+  leftright = (value1 + value3 + value5)/3;
+  updown = (value2 + value4 + value6)/3;
   
-  updown = (value1 + value3 + value5)/3;
-  leftright = (value2 + value4 + value6)/3;
-  
-  for (int i=0; i<6; i++){
-    if ((updown>=joystickArray[i] && updown<=joystickArray[i+1])) {
-      // if it is between the two above variables, press a button (wasd) from an array of chars, but with a frequency of i+ or - X
+  if (updown>=0 && updown<=256) {
+    Keyboard.press('s');
+    delay(50);
+    Keyboard.releaseAll();
+  } else if (updown>=257 && updown<=299) {
+    randNumber = random(2);
+    if (randNumber==1) {
+      Keyboard.press('w');
+      delay(50);
+      Keyboard.releaseAll();
+    } else {
+      Keyboard.press('s');
+      delay(50);
+      Keyboard.releaseAll();
     }
-    if ((leftright>=joystickArray[i] && leftright<=joystickArray[i+1])) {
-      
+  } else if (updown>=300 && updown<=700) {
+    Keyboard.releaseAll();
+  } else if (updown>=701 && updown<=767) {
+    randNumber = random(2);
+    if (randNumber==1) {
+      Keyboard.press('s');
+      delay(50);
+      Keyboard.releaseAll();
+    } else {
+      Keyboard.press('w');
+      delay(50);
+      Keyboard.releaseAll();
     }
+  } else if (updown>=768 && updown<=1024) {
+    Keyboard.press('w');
+    delay(50);
+    Keyboard.releaseAll();
   }
   
-  Serial.print(treatValue(updown));
+  if (leftright>=0 && leftright<=256) {
+    Keyboard.press('d');
+    delay(50);
+    Keyboard.releaseAll();
+  } else if (leftright>=257 && leftright<=299) {
+    randNumber = random(2);
+    if (randNumber==1) {
+      Keyboard.press('a');
+      delay(50);
+      Keyboard.releaseAll();
+    } else {
+      Keyboard.press('d');
+      delay(50);
+      Keyboard.releaseAll();
+    }
+  } else if (leftright>=300 && leftright<=700) {
+    Keyboard.releaseAll();
+  } else if (leftright>=701 && leftright<=767) {
+    randNumber = random(2);
+    if (randNumber==1) {
+      Keyboard.press('d');
+      delay(50);
+      Keyboard.releaseAll();
+    } else {
+      Keyboard.press('a');
+      delay(50);
+      Keyboard.releaseAll();
+    }
+  } else if (leftright>=768 && leftright<=1024) {
+    Keyboard.press('a');
+    delay(50);
+    Keyboard.releaseAll();
+  }
+  
+  Serial.print(updown);
   Serial.print("\t : \t");
-  Serial.println(treatValue(leftright));
+  Serial.println(leftright);
 }
