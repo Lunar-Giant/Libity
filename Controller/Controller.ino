@@ -12,6 +12,15 @@
   by Jay Margalus, Zach Cassity & Russ Lankenau <http://www.lunargiant.com>
 */
 
+const int DIRECTION_NORTH = 1;
+const int DIRECTION_NORTH_EAST= 2;
+const int DIRECTION_EAST = 3;
+const int DIRECTION_SOUTH_EAST = 4;
+const int DIRECTION_SOUTH = 5;
+const int DIRECTION_SOUTH_WEST = 6;
+const int DIRECTION_WEST = 7;
+const int DIRECTION_NORTH_WEST = 8;
+
 /*
   Constants where the controllers will be plugged in.
   
@@ -42,7 +51,7 @@ int buttonState6 = 0;
 // end vars for reading when pushbuttons 1-8 have been pressed
 
 // vars for reading when joysticks are being used
-int value1 = 0;
+int joystick1x = 0;
 int value2 = 0;
 int value3 = 0;
 int value4 = 0;
@@ -89,16 +98,6 @@ void setup() {
 }
 
 void loop(){
-  
-  int upcount = 0;
-  int downcount = 0;
-  int noupdown = 0;
-  int leftcount = 0;
-  int rightcount = 0;
-  int noleftright = 0;
-  int x = 0;
-  int joystickBag[3] = {0,0,0};
-  
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
   buttonState2 = digitalRead(buttonPin2);
@@ -106,7 +105,7 @@ void loop(){
   buttonState4 = digitalRead(buttonPin4);
   buttonState5 = digitalRead(buttonPin5);
   buttonState6 = digitalRead(buttonPin6);
-  value1 = analogRead(joyPin1);
+  joystick1x = analogRead(joyPin1);
   delay(10);
   value2 = analogRead(joyPin2);
   delay(10);
@@ -263,26 +262,37 @@ void loop(){
   }
   
   // Joysticks
-  int leftright[] = {value1, value3, value5};
+  int joystickBag[3] = {0,0,0};
+  
+  
+  int leftright[] = {joystick1x, value3, value5};
   int updown[] = {value2, value4, value6};
+  
+  /*
+  for (i = 0; i < 3; i++ ) {
+    float y = ( updown[i] / 512.0 ) - 1.0;
+    float x = ( leftright[i] / 512.0 ) - 1.0;
+    float angle = atan2( y, x );
+    float magnitude = sqrt( y * y + x * x );
+    if ( magnitude > 0.3 ) {
+      joystickBag[i] = angleToOctant( angle );
+    }
+  }  
+  */
   
   for (i=0;i<3;i++){
     if (updown[i]>=0 && updown[i]<=299) {
-      joystickBag[i]=217;
-    } else if (updown[i]>=300 && updown[i]<=700) {
-      //joystickBag[i]=0;
+      joystickBag[i]=KEY_DOWN_ARROW;
     } else if (updown[i]>=701 && updown[i]<=1024) {
-      joystickBag[i]=218;
+      joystickBag[i]=KEY_UP_ARROW;
     }
   }
   
   for (i=0;i<3;i++){
     if (leftright[i]>=0 && leftright[i]<=299) {
-      joystickBag[i]=215;
-    } else if (leftright[i]>=300 && leftright[i]<=700) {
-      //joystickBag[i]=0;
+      joystickBag[i]=KEY_RIGHT_ARROMW
     } else if (leftright[i]>=701 && leftright[i]<=1024) {
-      joystickBag[i]=216;
+      joystickBag[i]=KEY_LEFT_ARROW;
     }
   }
   
@@ -296,4 +306,8 @@ void loop(){
   }
   
   previousStick = joystickBag[randNumber];
+}
+
+int angleToOctant( float angle ) {
+  //TODO
 }
