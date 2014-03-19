@@ -180,7 +180,7 @@ void loop(){
     buttonTime2 = 251;
     buttonTime3 = 502;
   } else if((abs(middle-lowest)<=interval) || (abs(middle-highest)<=interval)) {
-    randNumber = random(3);
+    randNumber = random(10);
     if (randNumber == 1 || randNumber ==2) {
       Keyboard.press(buttonA);
       Keyboard.release(buttonA);
@@ -191,7 +191,7 @@ void loop(){
       Keyboard.release(buttonA);
     }
   } else if (buttonTime!=0 || buttonTime2!=251 || buttonTime3!=502){
-      randNumber = random(3);
+      randNumber = random(10);
       if (randNumber == 1) {
         Keyboard.press(buttonA);
         Keyboard.release(buttonA);
@@ -235,7 +235,7 @@ void loop(){
     buttonTime5 = 251;
     buttonTime6 = 502;
   } else if((abs(middle-lowest)<=interval) || (abs(middle-highest)<=interval)) {
-    randNumber = random(3);
+    randNumber = random(10);
     if (randNumber == 1 || randNumber ==2) {
       Keyboard.press(buttonB);
       Keyboard.release(buttonB);
@@ -246,7 +246,7 @@ void loop(){
       Keyboard.release(buttonB);
     }
   } else if (buttonTime!=0 || buttonTime2!=251 || buttonTime3!=502){
-      randNumber = random(3);
+      randNumber = random(10);
       if (randNumber == 1) {
         Keyboard.press(buttonB);
         Keyboard.release(buttonB);
