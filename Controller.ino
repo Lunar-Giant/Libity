@@ -175,30 +175,31 @@ void loop(){
   
   if (abs(highest - lowest) <= interval) {
     Keyboard.press(buttonA);
-    Keyboard.release(buttonA);
     buttonTime = 0;
     buttonTime2 = 251;
     buttonTime3 = 502;
   } else if((abs(middle-lowest)<=interval) || (abs(middle-highest)<=interval)) {
-    randNumber = random(10);
-    if (randNumber == 1 || randNumber ==2) {
+    randNumber = random(5);
+    if (randNumber == 1) {
       Keyboard.press(buttonA);
-      Keyboard.release(buttonA);
       buttonTime = 0;
       buttonTime2 = 251;
       buttonTime3 = 502;
-    } else {
+    }
+    randNumber = random(5);
+    if (randNumber == 1) {
       Keyboard.release(buttonA);
     }
   } else if (buttonTime!=0 || buttonTime2!=251 || buttonTime3!=502){
       randNumber = random(10);
       if (randNumber == 1) {
         Keyboard.press(buttonA);
-        Keyboard.release(buttonA);
         buttonTime = 0;
         buttonTime2 = 251;
         buttonTime3 = 502;
-      } else {
+      }
+      randNumber = random(3);
+      if (randNumber == 1) {
         Keyboard.release(buttonA);
       }
   } else {
@@ -230,31 +231,32 @@ void loop(){
   
   if (abs(highest - lowest) <= interval) {
     Keyboard.press(buttonB);
-    Keyboard.release(buttonB);
     buttonTime4 = 0;
     buttonTime5 = 251;
     buttonTime6 = 502;
   } else if((abs(middle-lowest)<=interval) || (abs(middle-highest)<=interval)) {
-    randNumber = random(10);
-    if (randNumber == 1 || randNumber ==2) {
+    randNumber = random(5);
+    if (randNumber == 1) {
       Keyboard.press(buttonB);
-      Keyboard.release(buttonB);
       buttonTime4 = 0;
       buttonTime5 = 251;
       buttonTime6 = 502;
-    } else {
+    }
+    randNumber = random(5);
+    if (randNumber == 1) {
       Keyboard.release(buttonB);
     }
   } else if (buttonTime!=0 || buttonTime2!=251 || buttonTime3!=502){
       randNumber = random(10);
       if (randNumber == 1) {
         Keyboard.press(buttonB);
-        Keyboard.release(buttonB);
         buttonTime4 = 0;
         buttonTime5 = 251;
         buttonTime6 = 502;
-      } else {
-        Keyboard.release(buttonB);
+      }
+      randNumber = random(3);
+      if (randNumber == 1) {
+        Keyboard.release(buttonA);
       }
   } else {
     Keyboard.release(buttonB);
