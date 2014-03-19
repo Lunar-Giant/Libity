@@ -93,7 +93,7 @@ void loop(){
   int rightcount = 0;
   int noleftright = 0;
   int x = 0;
-  int joystickBag[2];
+  int joystickBag[3] = {0,0,0};
   
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
@@ -210,59 +210,36 @@ void loop(){
   
   for (i=0;i<3;i++){
     if (updown[i]>=0 && updown[i]<=299) {
-      downcount++;
+      joystickBag[i]=217;
     } else if (updown[i]>=300 && updown[i]<=700) {
-      noupdown++;
+      //joystickBag[i]=0;
     } else if (updown[i]>=701 && updown[i]<=1024) {
-      upcount++;
+      joystickBag[i]=218;
     }
   }
   
   for (i=0;i<3;i++){
     if (leftright[i]>=0 && leftright[i]<=299) {
-      rightcount++;
+      joystickBag[i]=215;
     } else if (leftright[i]>=300 && leftright[i]<=700) {
-      noleftright++;
+      //joystickBag[i]=0;
     } else if (leftright[i]>=701 && leftright[i]<=1024) {
-      leftcount++;
+      joystickBag[i]=216;
     }
   }
   
-  for (i=0;i<rightcount;i++) {
-    joystickBag[x] = 215;
-    x++;
-  }
-  for (i=0;i<leftcount;i++){
-    joystickBag[x] = 216;
-    x++;
-  }
-  for (i=0;i<upcount;i++) {
-    joystickBag[x] = 218;
-    x++;
-  }
-  for (i=0;i<downcount;i++){
-    joystickBag[x] = 217;
-    x++;
-  }
-  for (i=0;i<noleftright;i++){
-    joystickBag[x] = 0;
-    x++;
-  }
-  for (i=0;i<noupdown;i++){
-    joystickBag[x] = 0;
-    x++;
-  }
-  
-  randNumber = random(2);
-  joystickBag[randNumber];
+  randNumber = random(3);
+  Serial.println(joystickBag[randNumber]);
   
   if (joystickBag[randNumber]==0) {
     Keyboard.release(previousStick);
   } else if (previousStick!=joystickBag[randNumber]){
     Keyboard.release(previousStick);
     Keyboard.press(joystickBag[randNumber]);
+    Serial.println(joystickBag[randNumber]);
   }
-
+  
+  previousStick = joystickBag[randNumber];
 /*
   Serial.print(joystickBag[0]);
   Serial.print("\t : \t");
