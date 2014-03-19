@@ -285,7 +285,6 @@ void loop(){
   }
   
   randNumber = random(3);
-  Serial.println(joystickBag[randNumber]);
   
   if (joystickBag[randNumber]==0) {
     Keyboard.release(previousStick);
@@ -295,13 +294,4 @@ void loop(){
   }
   
   previousStick = joystickBag[randNumber];
-/*
-  Serial.print(joystickBag[0]);
-  Serial.print("\t : \t");
-  Serial.print(joystickBag[1]);
-  Serial.print("\t : \t");
-  Serial.print(joystickBag[2]);
-  Serial.print("\t : \t");
-  Serial.println(joystickBag[randNumber]);
-*/
 }
