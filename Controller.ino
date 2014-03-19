@@ -9,7 +9,7 @@
     * 10K resistors attached to pins 2 - 13 from ground
    
   created 2014
-  by Jay Margalus & Russ Lankenau <http://www.lunargiant.com>
+  by Jay Margalus, Zach Cassity & Russ Lankenau <http://www.lunargiant.com>
 */
 
 /*
@@ -61,7 +61,11 @@ unsigned long buttonTime6 = 502;
 //highest and lowest time value of button pushed
 unsigned long lowest = 0;
 unsigned long highest = 0;
+unsigned long middle = 0;
 // end vars for reading the time at which a button was pressed
+
+int buttonA = 32;
+int buttonB = 32;
 
 // other variables
 unsigned long time;                              // track the time
@@ -142,6 +146,7 @@ void loop(){
   // Create an array that tracks the most recent time a button has been pressed
   
   int timeArray[] = {buttonTime, buttonTime2, buttonTime3};
+  int timeArray2[] = {buttonTime4, buttonTime5, buttonTime6};
   
   // Check for highest and lowest value in the array
   
@@ -161,47 +166,98 @@ void loop(){
     }
   }
   
+  middle = timeArray[0];
+  for (int i=0; i<3; i++) {
+    if ((timeArray[i]!=lowest) && (timeArray[i]!=highest)){
+      middle = timeArray[i];
+    }
+  }
+  
   if (abs(highest - lowest) <= interval) {
-    Keyboard.press(64);
-    delay(5);
-    Keyboard.release(64);
+    Keyboard.press(buttonA);
+    Keyboard.release(buttonA);
     buttonTime = 0;
     buttonTime2 = 251;
     buttonTime3 = 502;
+  } else if((abs(middle-lowest)<=interval) || (abs(middle-highest)<=interval)) {
+    randNumber = random(3);
+    if (randNumber == 1 || randNumber ==2) {
+      Keyboard.press(buttonA);
+      Keyboard.release(buttonA);
+      buttonTime = 0;
+      buttonTime2 = 251;
+      buttonTime3 = 502;
+    } else {
+      Keyboard.release(buttonA);
+    }
+  } else if (buttonTime!=0 || buttonTime2!=251 || buttonTime3!=502){
+      randNumber = random(3);
+      if (randNumber == 1) {
+        Keyboard.press(buttonA);
+        Keyboard.release(buttonA);
+        buttonTime = 0;
+        buttonTime2 = 251;
+        buttonTime3 = 502;
+      } else {
+        Keyboard.release(buttonA);
+      }
   } else {
-    Keyboard.release(64);
+    Keyboard.release(buttonA);
   }
-  
-  
-  // Create an array that tracks the most recent time a button has been pressed
-  
-  int timeArray2[] = {buttonTime4, buttonTime5, buttonTime6};  
   
   // B Button
   
   highest = timeArray2[0];
   for (int i=0; i<3; i++) {
     if (timeArray2[i]>=highest){
-      highest = timeArray2[i];
+      highest = timeArray[i];
     }
   }
   
   lowest = timeArray2[0];
   for (int i=0; i<3; i++) {
     if (timeArray2[i]<=lowest){
-      lowest = timeArray2[i];
+      lowest = timeArray[i];
+    }
+  }
+  
+  middle = timeArray2[0];
+  for (int i=0; i<3; i++) {
+    if ((timeArray2[i]!=lowest) && (timeArray2[i]!=highest)){
+      middle = timeArray2[i];
     }
   }
   
   if (abs(highest - lowest) <= interval) {
-    Keyboard.press(' ');
-    delay(10);
-    Keyboard.release(' ');
+    Keyboard.press(buttonB);
+    Keyboard.release(buttonB);
     buttonTime4 = 0;
     buttonTime5 = 251;
     buttonTime6 = 502;
+  } else if((abs(middle-lowest)<=interval) || (abs(middle-highest)<=interval)) {
+    randNumber = random(3);
+    if (randNumber == 1 || randNumber ==2) {
+      Keyboard.press(buttonB);
+      Keyboard.release(buttonB);
+      buttonTime4 = 0;
+      buttonTime5 = 251;
+      buttonTime6 = 502;
+    } else {
+      Keyboard.release(buttonB);
+    }
+  } else if (buttonTime!=0 || buttonTime2!=251 || buttonTime3!=502){
+      randNumber = random(3);
+      if (randNumber == 1) {
+        Keyboard.press(buttonB);
+        Keyboard.release(buttonB);
+        buttonTime4 = 0;
+        buttonTime5 = 251;
+        buttonTime6 = 502;
+      } else {
+        Keyboard.release(buttonB);
+      }
   } else {
-    Keyboard.release(' ');
+    Keyboard.release(buttonB);
   }
   
   // Joysticks
@@ -236,7 +292,6 @@ void loop(){
   } else if (previousStick!=joystickBag[randNumber]){
     Keyboard.release(previousStick);
     Keyboard.press(joystickBag[randNumber]);
-    Serial.println(joystickBag[randNumber]);
   }
   
   previousStick = joystickBag[randNumber];
