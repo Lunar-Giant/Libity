@@ -25,8 +25,8 @@ SoftwareSerial controller1(0, 1);
 */
 const int buttonPin = 8;
 const int buttonPin2 = 9;
-const int buttonPin3 = 10;
-const int buttonPin4 = 11;
+const int buttonPin3 = 11;
+const int buttonPin4 = 12;
 const int joyPin1 = 0;
 const int joyPin2 = 1;
 const int joyPin3 = 2;
@@ -73,7 +73,8 @@ void setup() {
   pinMode(buttonPin2, INPUT);
   pinMode(buttonPin3, INPUT);
   pinMode(buttonPin4, INPUT);
-	
+
+  Serial.begin(9600);	
   controller1.begin(9600);
 }
 
@@ -108,7 +109,7 @@ void loop() {
   // if it is, the buttonState is HIGH:
   
   if (buttonState == HIGH) {       
-    buttonTime = time; 
+    buttonTime = time;
   }
   if (buttonState2 == HIGH) {       
     buttonTime2 = time; 
@@ -130,14 +131,14 @@ void loop() {
   // A Button
   
   highest = timeArray[0];
-  for (int i=0; i<3; i++) {
+  for (int i=0; i<2; i++) {
     if (timeArray[i]>=highest){
       highest = timeArray[i];
     }
   }
   
   lowest = timeArray[0];
-  for (int i=0; i<3; i++) {
+  for (int i=0; i<2; i++) {
     if (timeArray[i]<=lowest){
       lowest = timeArray[i];
     }
@@ -146,56 +147,58 @@ void loop() {
   if (abs(highest - lowest) <= interval) {
     // Keyboard.press(buttonA);
     controller1.print("pa");
+    //Serial.println("WORKING");
     buttonTime = 0;
     buttonTime2 = 251;
   } else {
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.press(buttonA);
-      controller1.print("pa");
+      //controller1.print("pa");
       buttonTime = 0;
       buttonTime2 = 251;
     }
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.release(buttonA);
-	  controller1.print("ra");
+	  //controller1.print("ra");
     }
   }
   
   // B Button
   
   highest = timeArray2[0];
-  for (int i=0; i<3; i++) {
+  for (int i=0; i<2; i++) {
     if (timeArray2[i]>=highest){
-      highest = timeArray[i];
+      highest = timeArray2[i];
     }
   }
   
   lowest = timeArray2[0];
-  for (int i=0; i<3; i++) {
+  for (int i=0; i<2; i++) {
     if (timeArray2[i]<=lowest){
-      lowest = timeArray[i];
+      lowest = timeArray2[i];
     }
   }
   
   if (abs(highest - lowest) <= interval) {
     // Keyboard.press(buttonB);
     controller1.print("pb");
+    //Serial.println("WORKING 2");
     buttonTime3 = 0;
     buttonTime4 = 251;
   } else {
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.press(buttonB);
-      controller1.print("pb");
+      //controller1.print("pb");
       buttonTime3 = 0;
       buttonTime4 = 251;
     }
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.release(buttonB);
-	  controller1.print("rb");
+	  //controller1.print("rb");
     }
   }
   
@@ -227,12 +230,12 @@ void loop() {
   
   if (joystickBag[randNumber]==0) {
     // Keyboard.release(previousStick);
-	controller1.print("r");
+	//controller1.print("r");
   } else if (previousStick!=joystickBag[randNumber]){
-	controller1.print("r");
-        controller1.print(previousStick);
-        controller1.print("p");
-	controller1.print(joystickBag[randNumber]);
+	//controller1.print("r");
+        //controller1.print(previousStick);
+        //controller1.print("p");
+	//controller1.print(joystickBag[randNumber]);
     // Keyboard.release(previousStick);
     // Keyboard.press(joystickBag[randNumber]);
   }
