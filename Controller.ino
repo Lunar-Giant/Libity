@@ -36,7 +36,6 @@ void setup() {
 }
 
 void loop(){
-  int code, key;
   if(controller1.read() == 'p'){
     Serial.println("WORKING");
   }
