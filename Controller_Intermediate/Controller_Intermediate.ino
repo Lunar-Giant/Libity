@@ -1,5 +1,3 @@
-#include <SoftwareSerial.h>
-
 /*
   Lunar Giant Controller
 
@@ -13,8 +11,6 @@
   created 2014
   by Jay Margalus, Zach Cassity & Russ Lankenau <http://www.lunargiant.com>
 */
-
-SoftwareSerial controller1(0, 1);
 
 /*
   Constants where the controllers will be plugged in.
@@ -75,7 +71,6 @@ void setup() {
   pinMode(buttonPin4, INPUT);
 
   Serial.begin(9600);	
-  controller1.begin(9600);
 }
 
 void loop() {
@@ -146,7 +141,7 @@ void loop() {
   
   if (abs(highest - lowest) <= interval) {
     // Keyboard.press(buttonA);
-    controller1.print("pa");
+    Serial.print("pa");
     //Serial.println("WORKING");
     buttonTime = 0;
     buttonTime2 = 251;
@@ -154,14 +149,14 @@ void loop() {
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.press(buttonA);
-      //controller1.print("pa");
+      //Serial.print("pa");
       buttonTime = 0;
       buttonTime2 = 251;
     }
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.release(buttonA);
-	  //controller1.print("ra");
+	  //Serial.print("ra");
     }
   }
   
@@ -183,7 +178,7 @@ void loop() {
   
   if (abs(highest - lowest) <= interval) {
     // Keyboard.press(buttonB);
-    controller1.print("pb");
+    Serial.print("pb");
     //Serial.println("WORKING 2");
     buttonTime3 = 0;
     buttonTime4 = 251;
@@ -191,14 +186,14 @@ void loop() {
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.press(buttonB);
-      //controller1.print("pb");
+      //Serial.print("pb");
       buttonTime3 = 0;
       buttonTime4 = 251;
     }
     randNumber = random(5);
     if (randNumber == 1) {
       // Keyboard.release(buttonB);
-	  //controller1.print("rb");
+	  //Serial.print("rb");
     }
   }
   
@@ -230,12 +225,12 @@ void loop() {
   
   if (joystickBag[randNumber]==0) {
     // Keyboard.release(previousStick);
-	//controller1.print("r");
+	//Serial.print("r");
   } else if (previousStick!=joystickBag[randNumber]){
-	//controller1.print("r");
-        //controller1.print(previousStick);
-        //controller1.print("p");
-	//controller1.print(joystickBag[randNumber]);
+	//Serial.print("r");
+        //Serial.print(previousStick);
+        //Serial.print("p");
+	//Serial.print(joystickBag[randNumber]);
     // Keyboard.release(previousStick);
     // Keyboard.press(joystickBag[randNumber]);
   }

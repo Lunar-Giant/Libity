@@ -26,36 +26,18 @@ SoftwareSerial controller1(8, 9);
 //SoftwareSerial controller2(10, 11);
 
 void setup() {  
-  controller1.begin(9600);
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
+  controller1.begin(9600);
   //controller2.begin(9600);
   Keyboard.begin();
 }
 
 void loop(){
   int code, key;
-  if (controller1.available()) {
+  if(controller1.read() == 'p'){
     Serial.println("WORKING");
   }
-  // Serial.println(controller1.read());
-  /*if (controller1.available()) {
-    code = controller1.read();
-    key = controller1.read();
-    if (code=='p'){
-      Keyboard.press(32);
-    } else {
-      Keyboard.press(13);
-    }
-    Serial.print(c);
-  }*/
-  /*
-  if (controller2.available()) {
-    code = controller2.read();
-    key = controller2.read();
-    Serial.print(c);
-  }
-  */
 }
