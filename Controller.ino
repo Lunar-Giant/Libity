@@ -25,6 +25,8 @@
 SoftwareSerial controller1(8, 9);
 //SoftwareSerial controller2(10, 11);
 
+int pressed, key;
+
 void setup() {  
   Serial.begin(9600);
   while (!Serial) {
@@ -36,7 +38,22 @@ void setup() {
 }
 
 void loop(){
-  if(controller1.read() == 'p'){
-    Serial.println("WORKING");
+  
+  if(controller1.available() > 0) {
+    pressed = controller1.read();
+    key = controller1.read();
   }
+  
+  if(pressed == 'p'){
+    Serial.println(pressed);
+    Serial.println(key);
+    Keyboard.press(key);
+  }
+  /*if(controller2.read() == 'p'){
+    if(controller2.read() == 'a'){
+      Keyboard.press(99);
+    } else {
+      Keyboard.press(100);
+    }
+  }*/
 }
