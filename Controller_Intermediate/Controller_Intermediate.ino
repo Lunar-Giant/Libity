@@ -9,7 +9,7 @@
     * 10K resistors attached to pins 2 - 13 from ground
    
   created 2014
-  by Jay Margalus, Zach Cassity & Russ Lankenau <http://www.lunargiant.com>
+  by Jay Margalus & Russ Lankenau <http://www.lunargiant.com>
 */
 
 /*
