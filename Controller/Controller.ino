@@ -23,7 +23,9 @@
 */
 
 SoftwareSerial controller1(8, 9);
-//SoftwareSerial controller2(10, 11);
+SoftwareSerial controller2(10, 11);
+char buffer[2];
+char buffer2[2];
 
 void setup() {  
   Serial.begin(9600);
@@ -31,15 +33,44 @@ void setup() {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
   controller1.begin(9600);
-  //controller2.begin(9600);
+  controller2.begin(9600);
   Keyboard.begin();
 }
 
 void loop(){
-  if(controller1.read() == 'p'){
-    Serial.println("WORKING");
+  controller1.listen();
+  if(controller1.available()>=2) {
+    for(int i=0; i<2; i++){
+      buffer[i]=controller1.read();
+      
+    }
+    for(int i=0; i<2; i++){
+      Serial.println(buffer[i]);
+    }
+    /*if(buffer[0]=='p'){
+      Serial.println("Success");
+      if(buffer[1] == 'a'){
+        Keyboard.write(65);
+       } else {
+        Keyboard.write(90);
+      } 
+    }*/
   }
- /* if(controller1.read() == 'p'){
-    Serial.println("AlsoWORKING");
+  
+  
+  
+  /*controller2.listen();
+  if(controller2.available()>=2) {
+    for(int i=0; i<2; i++){
+      buffer2[i]=controller2.read();
+    }
+    if(buffer2[0]=='p'){
+      if(buffer2[1] == 'a'){
+        Keyboard.write(65);
+      } else {
+        Keyboard.write(90);
+      } 
+    }
   }*/
+  
 }
