@@ -23,7 +23,7 @@
 */
 
 SoftwareSerial controller1(8, 9);
-//SoftwareSerial controller1(10, 11);
+//SoftwareSerial controller2(10, 11);
 
 void setup() {  
   Serial.begin(9600);
@@ -39,4 +39,7 @@ void loop(){
   if(controller1.read() == 'p'){
     Serial.println("WORKING");
   }
+ /* if(controller1.read() == 'p'){
+    Serial.println("AlsoWORKING");
+  }*/
 }
